@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+    debounce="500"
+    color="white"
+    (ionChange)="search($event)"
+    placeholder="Enter keyword..."
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="filteredProducts.length > 0">
+      <ion-col size="6" *ngFor="let prod of filteredProducts" class="item-entry" routerLink="/tabs/tab1/prod-detail/{{ prod.id }}">
+        <ion-card>
+          <ion-img [src]="prod.images[0].src" alt="{{ prod.name }}" style="height: 150px"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle class="truncate">{{ prod.name }}</ion-card-subtitle>
+            <ion-card-title>{{ prod.price | currency: 'GHC' }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+<!--    SHOW THE SKELETON TEXT-->
+    <ion-row *ngIf="showSkeleton">
+      <ion-col size="6" *ngFor="let d of [].constructor(5)">
+        <ion-card>
+          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-card-header>
+            <ion-card-subtitle class="truncate"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-card-subtitle>
+            <ion-card-title><ion-skeleton-text animated style="width: 40%"></ion-skeleton-text></ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+<!--    NO PRODUCT FOUND-->
+    <ion-row *ngIf="filteredProducts.length <= 0 && touched" lines="none">
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>No Product Found</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
